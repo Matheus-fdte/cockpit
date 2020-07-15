@@ -21,6 +21,8 @@ pids
 
 #IDE Directory
 .idea
+.vscode
+
 # Jest
 coverage
 
