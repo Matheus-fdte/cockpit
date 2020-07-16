@@ -1,4 +1,4 @@
-const debug = require('debug')('flowbuild:cockpit:director');
+const debug = require('debug')('flowbuild:cockpit');
 const Builder = require('./builder');
 const configurationBuilder = require('./configuration-builder');
 const serviceBuilder = require('./services-builder');
