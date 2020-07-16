@@ -10,33 +10,27 @@ const CockpitRouter = require('../routes');
 const composeresolver = require('./compose-resolver');
 
 class CockpitBuilder {
-  constructor(_dbConfig, _port, _cors, _persistMode) {
-    this.config = {
-      dbConfig: _dbConfig,
-      port: _port,
-      cors: _cors,
-      persistMode: _persistMode,
-    };
+  constructor() {
+    this.config = {};
 
     this.middlewaresBeforeValidation = [];
     this.middlewaresAfterValidation = [];
   }
 
-    this.configureDb();
-    this.configureServer();
+  setPort(port) {
+    this.config.port = port;
   }
 
-  configureServer() {
-    this.app = new Koa();
-    this.middlewaresBeforeValidation.push(cors(this.cors));
-    this.middlewaresBeforeValidation.push(bodyParser());
-    this.middlewaresBeforeValidation.push(logger());
+  setPersistMode(persistMode) {
+    this.config.persistMode = persistMode;
   }
 
-  configureDb() {
-    if (this.persistMode === 'knex') {
-      this.config.db = dbConnection(this.config.dbConfig);
-    }
+  setCors(corsConfig) {
+    this.config.cors = corsConfig;
+  }
+
+  setDatabaseConfig(dbConfig) {
+    this.config.dbConfig = dbConfig;
   }
 
   addCompose(compose) {
