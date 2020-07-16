@@ -1,17 +1,76 @@
-function configurationBuilder(builder) {
-/**
- * @param {Function} middleware - koa native middleware
+/** @typedef {Object} DatabaseConfiguration
+ * @property {String} client
+ * @property {Object} connection
+ * @property {string} connection.host
+ * @property {number} connection.port
+ * @property {string} connection.username
+ * @property {string} connection.password
+ * @property {string} connection.database
  */
-  // eslint-disable-next-line max-len
-  function addConfigurationMiddleware(middleware) {
-    builder.useMiddwareBeforeValidation(middleware);
+
+/** @typedef CorsConfiguration
+ * @type {Object}
+ * @property {string} test
+ * @property {string} origin
+ * @property {Array} allowMethods
+ * @property {string[]} allowHeaders
+ */
+
+function configurationBuilder(builder) {
+  /**
+   * this method add a native middleware before all cockpit configuration
+   * here you can add new routes, authentication services or any type of configuration
+   * @param {Function} middleware - koa native middleware
+   */
+  function addMiddleware(middleware) {
+    builder.useMiddlewareBeforeValidation(middleware);
   }
-  // TODO: add compose DOC
-  function addCompose(fn) {
-    builder.addCompose(fn);
+
+  /**
+   * add compose module to builder
+   * @param {Function} middleware - koa native middleware
+   */
+  function addCompose(compose) {
+    builder.addCompose(compose);
   }
+
+  /**
+   * @param {number} port
+   */
+  function setPort(port) {
+    builder.setPort(port);
+  }
+
+  /**
+   *
+   * @param {('knex'|'memory')} persistMode
+   */
+  function setPersistMode(persistMode) {
+    builder.setPersistMode(persistMode);
+  }
+
+  /**
+   *
+   * @param {CorsConfiguration} corsConfig
+   */
+  function setCors(corsConfig) {
+    builder.setCors(corsConfig);
+  }
+
+  /**
+   *
+   * @param {DatabaseConfiguration} dbConfig
+   */
+  function setDatabaseConfig(dbConfig) {
+    builder.setDatabaseConfig(dbConfig);
+  }
+
   return {
-    addConfigurationMiddleware,
+    addMiddleware,
+    setPort,
+    setPersistMode,
+    setCors,
+    setDatabaseConfig,
     addCompose,
   };
 }
