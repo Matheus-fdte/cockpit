@@ -1,6 +1,5 @@
 const debug = require('debug')('flowbuild:cockpit:director');
 const Builder = require('./builder');
-const extensionTypeIdentifier = require('../utils/extension-type-identifier');
 const configurationBuilder = require('./configuration-builder');
 const serviceBuilder = require('./services-builder');
 
@@ -91,26 +90,10 @@ class CockpitDirector {
    */
   addConfiguration(configCallback) {
     const config = {
-      ...this.builder.config,
       ...this.configBuilder,
+      ...this.builder.config,
     };
-    const configInstance = configCallback(config);
-    if (configInstance) {
-      const type = Object.getPrototypeOf(configInstance)
-        .constructor.name.toLowerCase();
-      debug(`add configuration return instace type: ${type}`);
-      if (type === 'engine') {
-        this.configBuilder.addEngine(configInstance);
-      } else if (type === 'cockpit') {
-        this.configBuilder.addCockpit(configInstance);
-      } else if (type === 'compose') {
-        this.configBuilder.addCompose(configInstance);
-      } else {
-        // eslint-disable-next-line max-len
-        debug(`add configuration instace type: ${type} not finded, added as middleware`);
-        this.configBuilder.addMiddleware(configInstance);
-      }
-    }
+    configCallback(config);
     return this;
   }
 
@@ -122,20 +105,8 @@ class CockpitDirector {
       ...this.builder.config,
       ...this.serviceBuilder,
     };
-    const configInstance = serviceCallback(config);
-    if (!configInstance) {
-      const type = extensionTypeIdentifier(configInstance);
-      debug(`add service return instace type: ${type}`);
-      if (type === 'processStateListener') {
-        this.serviceBuilder.addProcesStateListener(configInstance);
-      } else if (type === 'activityManagerListener') {
-        this.serviceBuilder.addActivityManagerListener(configInstance);
-      } else {
-        // eslint-disable-next-line max-len
-        debug(`add service instace type: ${type} not finded, added as middleware`);
-        this.serviceBuilder.addMiddleware(configInstance);
-      }
-    }
+    serviceCallback(config);
+
     return this;
   }
 
