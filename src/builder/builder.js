@@ -65,41 +65,14 @@ class CockpitBuilder {
   async startEngine() {
     try {
       if (this.compose) {
-        debug('resolving compose');
+        debug('builder: resolving compose');
         const composeResult = await this.compose.resolve();
         if (composeResult) {
           composeresolver(this, composeResult);
-          debug('compose resolved');
+          debug('builder: compose resolved');
         } else {
-          debug('compose failed');
+          debug('builder: compose failed');
         }
-      }
-
-      if (this.engine) {
-        debug('adding activity-manager notifiers');
-        this.engine.setActivityManagerNotifier(
-          (activityManagerNotification) => {
-            this.activityManagerNotifiers.forEach((listener) => {
-              listener(activityManagerNotification);
-            });
-          },
-        );
-
-        debug('adding process-states notifiers');
-        this.engine.setProcessStateNotifier((processStateNotification) => {
-          this.processStateListeners.forEach((listener) => {
-            listener(processStateNotification);
-          });
-        });
-        debug('notifiers resolved');
-      } else {
-        // throw new Error('please add flowbuild engine');
-      }
-
-      if (this.cockpit) {
-        debug('cockpit added');
-      } else {
-        // throw new Error('please add flowbuild cockpit');
       }
     } catch (e) {
       debug(e.message);
