@@ -1,10 +1,10 @@
 function serviceBuilder(builder) {
-  function addServiceMiddleware(fn) {
+  function addMiddleware(fn) {
     builder.useMiddlewareAfterValidation(fn);
   }
 
   return {
-    addServiceMiddleware,
+    addMiddleware,
   };
 }
 
