@@ -3,7 +3,7 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const cors = require('koa2-cors');
-const debug = require('debug')('flowbuild:cockpit:builder');
+const debug = require('debug')('flowbuild:cockpit');
 // internal imports
 const dbConnection = require('./database');
 const CockpitRouter = require('../routes');
