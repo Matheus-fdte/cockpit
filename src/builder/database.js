@@ -1,11 +1,7 @@
 const Knex = require('knex');
-const dbValidation = require('../validators/database-config');
-
-const databaseConnectionConstructor = (dbConfig) => {
-  if (!dbValidation(dbConfig)) {
-    throw new Error('this database config not contain all required properties');
-  }
+// FIXME: check if this methods continue really necessary
+async function databaseConnectionConstructor(dbConfig) {
   return Knex(dbConfig);
-};
+}
 
 module.exports = databaseConnectionConstructor;
