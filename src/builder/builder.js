@@ -6,9 +6,7 @@ const cors = require('koa2-cors');
 const debug = require('debug')('flowbuild:cockpit:builder');
 // internal imports
 const dbConnection = require('./database');
-const routes = require('../routes');
-// const { setCockpit, setEngine } = require('../engine');
-const { captureActorData } = require('../middlewares');
+const CockpitRouter = require('../routes');
 const composeresolver = require('./compose-resolver');
 
 class CockpitBuilder {
@@ -20,10 +18,9 @@ class CockpitBuilder {
       persistMode: _persistMode,
     };
 
-    this.processStateListeners = [];
-    this.activityManagerListeners = [];
     this.middlewaresBeforeValidation = [];
     this.middlewaresAfterValidation = [];
+  }
 
     this.configureDb();
     this.configureServer();
@@ -50,36 +47,25 @@ class CockpitBuilder {
     }
   }
 
-  addEngine(engine) {
-    if (engine && !this.engine) {
-      this.engine = engine;
-    } else {
-      throw new Error('Invalid engine');
-    }
-  }
-
-  addCockpit(cockpit) {
-    if (cockpit && !this.cockpit) {
-      this.cockpit = cockpit;
-    } else {
-      throw new Error('Invalid Cockpit');
-    }
-  }
-
-  useMiddwareBeforeValidation(fn) {
+  useMiddlewareBeforeValidation(fn) {
     this.middlewaresBeforeValidation.push(fn);
   }
 
-  useMiddwareAfterValidation(fn) {
+  useMiddlewareAfterValidation(fn) {
     this.middlewaresAfterValidation.push(fn);
   }
 
-  addProcessStateListeners(fn) {
-    this.processStateListeners.push(fn);
+  configureServer() {
+    this.app = new Koa();
+    this.middlewaresBeforeValidation.push(cors(this.config.cors));
+    this.middlewaresBeforeValidation.push(bodyParser());
+    this.middlewaresBeforeValidation.push(logger());
   }
 
-  addActivityManagerListeners(fn) {
-    this.activityManagerListeners.push(fn);
+  configureDb() {
+    if (this.config.persistMode === 'knex') {
+      this.config.db = dbConnection(this.config.dbConfig);
+    }
   }
 
   async startEngine() {
@@ -127,17 +113,19 @@ class CockpitBuilder {
   }
 
   startServer() {
-    debug('adding middlewares');
+    this.configureDb();
+    this.configureServer();
+
+    debug('builder: adding middlewares');
     this.middlewaresBeforeValidation.forEach((md) => this.app.use(md));
-    this.app.use(captureActorData);
+    const cockpitRouter = CockpitRouter();
+    this.app.use(cockpitRouter.routes());
+    this.app.use(cockpitRouter.allowedMethods());
     this.middlewaresAfterValidation.forEach((md) => this.app.use(md));
-    routes().forEach((route) => {
-      this.app.use(route.routes());
-      this.app.use(route.allowedMethods());
-    });
 
     this.server = this.app.listen(this.config.port, () => {
-      debug(`Cockpit api start successfully on port ${this.config.port}`);
+      // eslint-disable-next-line max-len
+      debug(`buider: Cockpit api start successfully on port ${this.config.port}`);
     });
   }
 }
