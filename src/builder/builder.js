@@ -47,9 +47,15 @@ class CockpitBuilder {
 
   configureServer() {
     this.app = new Koa();
+    debug('builder: adding middlewares');
     this.middlewaresBeforeValidation.push(cors(this.config.cors));
     this.middlewaresBeforeValidation.push(bodyParser());
     this.middlewaresBeforeValidation.push(logger());
+    this.middlewaresBeforeValidation.forEach((md) => this.app.use(md));
+    const cockpitRouter = CockpitRouter();
+    this.app.use(cockpitRouter.routes());
+    this.app.use(cockpitRouter.allowedMethods());
+    this.middlewaresAfterValidation.forEach((md) => this.app.use(md));
   }
 
   configureDb() {
@@ -76,8 +82,14 @@ class CockpitBuilder {
   async startServer(serverStartedCallback) {
     await this.configureDb();
     this.configureServer();
-
-    this.server = this.app.listen(this.config.port, serverStartedCallback);
+    if (serverStartedCallback) {
+      this.server = this.app.listen(this.config.port, serverStartedCallback);
+    } else {
+      this.server = this.app.listen(this.config.port, () => {
+        // eslint-disable-next-line max-len
+        debug(`builder: cockpit server started on port ${this.config.port} without onStartCallback`);
+      });
+    }
   }
 }
 
