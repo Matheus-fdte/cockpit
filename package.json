@@ -5,7 +5,13 @@
   "main": "index.js",
   "author": "FDTE-DSD",
   "license": "MIT",
-  "keywords": ["BPMN","cockpit","workflow","admin","api"],
+  "keywords": [
+    "BPMN",
+    "cockpit",
+    "workflow",
+    "admin",
+    "api"
+  ],
   "homepage": "https://github.com/flow-build/cockpit#readme",
   "repository": {
     "type": "git",
@@ -22,7 +28,7 @@
     "release": "semantic-release"
   },
   "devDependencies": {
-    "@flowbuild/compose": "2.0.0",
+    "@flowbuild/compose": "^2.0.0",
     "@flowbuild/engine": "^1.1.1",
     "@flowbuild/mqtt-plugin": "0.0.1",
     "@semantic-release/changelog": "^5.0.1",
@@ -37,10 +43,10 @@
     "jest": "^24.8.0",
     "koa-jwt": "^3.6.0",
     "nodemon": "^1.19.4",
+    "pg": "^7.14.0",
     "prettier": "^2.0.4",
     "semantic-release": "^17.0.4",
-    "supertest": "^4.0.2",
-    "pg": "^7.14.0"
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "ajv": "^6.10.2",
