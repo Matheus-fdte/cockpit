@@ -56,8 +56,7 @@ class CockpitDirector {
 
   async start() {
     debug('starting cockpit api');
-    await this.builder.startEngine();
-    this.builder.startServer();
+    await this.builder.startModules();
     this.server = this.builder.server;
 
     return this;

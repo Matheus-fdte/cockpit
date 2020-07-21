@@ -34,7 +34,7 @@ class CockpitBuilder {
   }
 
   addCompose(compose) {
-    if (compose) {
+    if (compose && compose.resolve instanceof Function) {
       this.compose = compose;
     } else {
       throw new Error('Invalid compose');
@@ -62,21 +62,19 @@ class CockpitBuilder {
     }
   }
 
-  async startEngine() {
-    try {
-      if (this.compose) {
-        debug('builder: resolving compose');
-        const composeResult = await this.compose.resolve();
-        if (composeResult) {
-          composeresolver(this, composeResult);
-          debug('builder: compose resolved');
-        } else {
-          debug('builder: compose failed');
-        }
+  async startModules() {
+    if (this.compose) {
+      debug('builder: resolving compose');
+      const composeResult = await this.compose.resolve();
+      if (composeResult) {
+        composeResolver(this, composeResult);
+        debug('builder: compose resolved');
+        return true;
       }
-    } catch (e) {
-      debug(e.message);
+      debug('builder: compose failed');
+      return false;
     }
+    return undefined;
   }
 
   startServer() {
