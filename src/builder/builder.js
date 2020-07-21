@@ -7,7 +7,7 @@ const debug = require('debug')('flowbuild:cockpit');
 // internal imports
 const dbConnection = require('./database');
 const CockpitRouter = require('../routes');
-const composeresolver = require('./compose-resolver');
+const composeResolver = require('./compose-resolver');
 
 class CockpitBuilder {
   constructor() {
