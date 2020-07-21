@@ -57,8 +57,8 @@ class CockpitBuilder {
   }
 
   configureDb() {
-    if (this.config.persistMode === 'knex') {
-      this.config.db = dbConnection(this.config.dbConfig);
+    if (this.config.dbConfig) {
+      this.db = dbConnection(this.config.dbConfig);
     }
   }
 
