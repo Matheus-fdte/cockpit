@@ -77,21 +77,11 @@ class CockpitBuilder {
     return undefined;
   }
 
-  startServer() {
-    this.configureDb();
+  async startServer(serverStartedCallback) {
+    await this.configureDb();
     this.configureServer();
 
-    debug('builder: adding middlewares');
-    this.middlewaresBeforeValidation.forEach((md) => this.app.use(md));
-    const cockpitRouter = CockpitRouter();
-    this.app.use(cockpitRouter.routes());
-    this.app.use(cockpitRouter.allowedMethods());
-    this.middlewaresAfterValidation.forEach((md) => this.app.use(md));
-
-    this.server = this.app.listen(this.config.port, () => {
-      // eslint-disable-next-line max-len
-      debug(`buider: Cockpit api start successfully on port ${this.config.port}`);
-    });
+    this.server = this.app.listen(this.config.port, serverStartedCallback);
   }
 }
 

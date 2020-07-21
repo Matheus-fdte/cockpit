@@ -54,9 +54,10 @@ class CockpitDirector {
     return this;
   }
 
-  async start() {
+  async start(onServerStarted) {
     debug('starting cockpit api');
     await this.builder.startModules();
+    await this.builder.startServer(onServerStarted);
     this.server = this.builder.server;
 
     return this;
