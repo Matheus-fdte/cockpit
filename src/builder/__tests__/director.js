@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-vars */
 const Director = require('../director');
 
 test('client default construction success', async () => {
@@ -19,10 +21,10 @@ test('client default construction success', async () => {
   const director = new Director();
   let success = false;
   const middleware = () => {
-  }
+  };
 
   director.addConfiguration(({ setPort }) => setPort(3001));
-  director.addService(({addMiddleware}) => {
+  director.addService(({ addMiddleware }) => {
     addMiddleware(middleware);
   });
   await director.start(() => {});
