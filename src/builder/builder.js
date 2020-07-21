@@ -21,10 +21,6 @@ class CockpitBuilder {
     this.config.port = port;
   }
 
-  setPersistMode(persistMode) {
-    this.config.persistMode = persistMode;
-  }
-
   setCors(corsConfig) {
     this.config.cors = corsConfig;
   }
