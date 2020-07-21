@@ -43,14 +43,6 @@ function configurationBuilder(builder) {
 
   /**
    *
-   * @param {('knex'|'memory')} persistMode
-   */
-  function setPersistMode(persistMode) {
-    builder.setPersistMode(persistMode);
-  }
-
-  /**
-   *
    * @param {CorsConfiguration} corsConfig
    */
   function setCors(corsConfig) {
@@ -68,7 +60,6 @@ function configurationBuilder(builder) {
   return {
     addMiddleware,
     setPort,
-    setPersistMode,
     setCors,
     setDatabaseConfig,
     addCompose,
