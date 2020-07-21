@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "cockpit api manager",
   "main": "index.js",
-  "author": "fdte-dsd",
+  "author": "FDTE-DSD",
   "license": "MIT",
-  "keywords": [],
+  "keywords": ["BPMN","cockpit","workflow","admin","api"],
   "homepage": "https://github.com/flow-build/cockpit#readme",
   "repository": {
     "type": "git",
