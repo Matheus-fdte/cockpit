@@ -1,0 +1,14 @@
+{
+    "name": "cockpit-temaplte",
+    "type": "Cockpit",
+    "plugins": [
+        {
+            "package": "@flowbuild/mqtt-plugin",
+            "inputs": {
+                "host": "environment.SOCKET_HOST",
+                "port": 1883,
+                "protocol": "mqtt"
+            }
+        }
+    ]
+}
