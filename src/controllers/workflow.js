@@ -27,7 +27,11 @@ const saveWorkflow = async (ctx, next) => {
   const cockpit = getCockpit();
   const { name, description, blueprint_spec: blueprintSpec } = ctx.request.body;
   try {
-    const workflow = await cockpit.saveWorkflow(name, description, blueprintSpec);
+    const workflow = await cockpit.saveWorkflow(
+      name,
+      description,
+      blueprintSpec,
+    );
     ctx.status = 201;
     ctx.body = {
       workflow_id: workflow.id,
