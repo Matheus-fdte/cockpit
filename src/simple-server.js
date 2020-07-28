@@ -1,4 +1,7 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
+const {
+  Cockpit: CockpitInstance,
+} = require('@flowbuild/engine');
 const jwt = require('koa-jwt');
 const debug = require('debug')('flowbuild:cockpit');
 const Cockpit = require('./builder');
@@ -9,6 +12,7 @@ async function simpleServer() {
       addMiddleware,
       setCors,
       setPort,
+      addCockpit,
     }) => {
       setPort(3000);
       setCors({
@@ -19,6 +23,7 @@ async function simpleServer() {
       addMiddleware(jwt({
         secret: '1234',
       }));
+      addCockpit(new CockpitInstance('memory'));
     })
     .start(() => {
     // eslint-disable-next-line no-console
