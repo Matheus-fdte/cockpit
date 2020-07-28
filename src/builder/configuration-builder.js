@@ -35,6 +35,14 @@ function configurationBuilder(builder) {
   }
 
   /**
+   * add compose module to builder
+   * @param {Object} cockpit - flowbuild/cockpit
+   */
+  function addCockpit(cockpit) {
+    builder.addCockpit(cockpit);
+  }
+
+  /**
    * @param {number} port
    */
   function setPort(port) {
@@ -63,6 +71,7 @@ function configurationBuilder(builder) {
     setCors,
     setDatabaseConfig,
     addCompose,
+    addCockpit,
   };
 }
 

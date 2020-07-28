@@ -8,6 +8,9 @@ const debug = require('debug')('flowbuild:cockpit');
 const dbConnection = require('./database');
 const CockpitRouter = require('../routes');
 const composeResolver = require('./compose-resolver');
+const {
+  setCockpit
+} = require('./instances');
 
 class CockpitBuilder {
   constructor() {
@@ -29,6 +32,14 @@ class CockpitBuilder {
     this.config.dbConfig = dbConfig;
   }
 
+  addCockpit(cockpit) {
+    if (cockpit) {
+      this.cockpit = cockpit;
+    } else {
+      throw new Error('Invalid compose');
+    }
+  }
+
   addCompose(compose) {
     if (compose && compose.resolve instanceof Function) {
       this.compose = compose;
@@ -46,6 +57,7 @@ class CockpitBuilder {
   }
 
   configureServer() {
+    setCockpit(this.cockpit);
     this.app = new Koa();
     debug('builder: adding middlewares');
     this.middlewaresBeforeValidation.push(cors(this.config.cors));
