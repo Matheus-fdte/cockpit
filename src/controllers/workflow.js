@@ -40,7 +40,7 @@ const saveWorkflow = async (ctx, next) => {
     await next();
   } catch (err) {
     ctx.status = 400;
-    ctx.body = { error: err };
+    ctx.body = { message: `Failed at ${err.message}`, error: err };
     await next();
   }
 };
